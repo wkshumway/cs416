@@ -71,9 +71,9 @@ bool read(char board[][B_SIZE], const char* fileName)
       {
          fin >> board[r][c];
          assert(!fin.fail());
-         assert(board[r][c] == 'X' ||
-                board[r][c] == 'O' ||
-                board[r][c] == '.');
+         assert(board[r][c] == X_CONST ||
+                board[r][c] == O_CONST ||
+                board[r][c] == DOT_CONST);
       }
 
    // close the file
@@ -143,9 +143,9 @@ void display(const char board[][B_SIZE])
    }
 
    // display who won
-   if (didWin(board, 'X'))
+   if (didWin(board, X_CONST))
       cout << "X won!\n";
-   if (didWin(board, 'O'))
+   if (didWin(board, O_CONST))
       cout << "O won!\n";
 
    return;
