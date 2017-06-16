@@ -151,6 +151,87 @@ void display(const char board[][B_SIZE])
    return;
 }
 
+bool didRowWin(const char board[B_SIZE], char turn)
+{
+  for (int i = 0; i < B_SIZE; i++)
+    {
+      if (board[i] != turn)
+        {
+          return false;
+        }
+    }
+  return true;
+}
+
+bool didColWin(const char board[][B_SIZE], char turn, int index)
+{
+  for (int i = 0; i < B_SIZE; i++)
+    {
+      //change the row indice as we move down the same column
+      if (board[i][index] != turn)
+        {
+          return false;
+        }
+    }
+  return true;
+}
+
+bool didStraightWin(const char board[][B_SIZE], char turn)
+{
+  for (int i = 0; i < B_SIZE; i++)
+    {
+      //check 1st thing in each row
+      if (board[i][0] == turn)
+        {
+          if (didRowWin(board[i], turn))
+            {
+              return true;
+            }
+        }
+      //check 1st thing in each column
+      if (board[0][i] == turn)
+        {
+          if (didColWin(board, turn, i))
+            {
+              return true;
+            }
+        }
+    }
+  return false;
+}
+
+bool didDiagWin(const char board[][B_SIZE], char turn)
+{
+  bool rval = false;
+
+  if (board[0][0] == turn && board[B_SIZE-1][B_SIZE-1] == turn)
+    {
+      rval = true;
+
+      // size -1 because we already checked the bottom corner
+      for (int i = 1; i < (B_SIZE - 1); i++)
+        {
+          if (board[i][i] != turn)
+            {
+              rval = false;
+            }
+        }
+    }
+  else if (board[0][B_SIZE-1] == turn && board[B_SIZE-1][0] == turn)
+    {
+      rval = true;
+
+      // end at 1 rather than 0 because we already checked the bottom corner
+      for (int i = B_SIZE - 2; i >= 1; i--)
+        {
+          if (board[i][i] != turn)
+            {
+              rval = false;
+            }
+        }
+    }
+  return rval;
+}
 /********************************************
  * DID WIN
  * Did a given player (determined by the "turn"
@@ -158,5 +239,16 @@ void display(const char board[][B_SIZE])
  *******************************************/
 bool didWin(const char board[][B_SIZE], char turn)
 {
-   return false;
+  bool rval = false;
+
+  if (didDiagWin(board, turn) == true)
+    {
+      rval = true;
+    }
+  else if (didStraightWin(board, turn) == true)
+    {
+      rval = true;
+    }
+
+  return rval; //modified this line
 }
